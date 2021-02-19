@@ -56,6 +56,11 @@ class SurveysController < ApplicationController
     end
   end
 
+  def answers
+    @participants = Participant.all
+    @questions = @survey.questions
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_survey
@@ -64,6 +69,9 @@ class SurveysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def survey_params
-      params.require(:survey).permit(:name)
+      params.require(:survey).permit(:name,
+        :questions_attributes => [:id, :content,
+          :answers_attributes => [:id, :content, :participant_id]
+        ])
     end
 end
